@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="flame" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#F0813C"/>
+      <stop offset="0.5" stop-color="#DB5203"/>
+      <stop offset="1" stop-color="#A63D00"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="#000D1B"/>
+  <g transform="translate(32 32) scale(0.6) translate(-47 -47)">
+    <path d="M30 3c1 15 9 24 14 33 6 12 4 26-7 34 3-9 1-15-5-19-9-6-14-15-12-25 1-8 6-15 10-23Z" fill="#C34800"/>
+    <path d="M23 20c3 13-1 20-6 27-6 8-8 18-3 27 4 8 12 12 21 12-11-6-15-15-11-24 3-8 9-14 8-24-1-8-4-14-9-18Z" fill="url(#flame)"/>
+    <g transform="translate(30 36) scale(2.3)" fill="none" stroke="#fff" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m10 20-1.25-2.5L6 18"/>
+      <path d="M10 4 8.75 6.5 6 6"/>
+      <path d="m14 20 1.25-2.5L18 18"/>
+      <path d="m14 4 1.25 2.5L18 6"/>
+      <path d="m17 21-3-6h-4"/>
+      <path d="m17 3-3 6 1.5 3"/>
+      <path d="M2 12h6.5L10 9"/>
+      <path d="m20 10-1.5 2 1.5 2"/>
+      <path d="M22 12h-6.5L14 15"/>
+      <path d="m4 10 1.5 2L4 14"/>
+      <path d="m7 21 3-6-1.5-3"/>
+      <path d="m7 3 3 6h4"/>
+    </g>
+  </g>
+</svg>

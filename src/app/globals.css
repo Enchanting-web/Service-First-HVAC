@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/*
+ * Palette sampled directly from the Service First design mockup
+ * (assets/mockup.png) with scripts/png-mode.mjs and scripts/png-orange.mjs.
+ * The mockup uses a brighter orange for text and icons than for solid fills,
+ * so the flame scale keeps both: 500/600 for accents, 700 for filled surfaces.
+ */
+@theme {
+  --color-ink: #000d1b;
+  --color-ink-deep: #000b15;
+  --color-band: #09111c;
+  --color-surface: #0f1721;
+  --color-surface-alt: #0a141f;
+  --color-raised: #16202c;
+  --color-hairline: #16202b;
+  --color-hairline-strong: #22303f;
+
+  --color-flame-400: #ee7a3a;
+  --color-flame-500: #e2611d;
+  --color-flame-600: #db5203;
+  --color-flame-700: #c34800;
+  --color-flame-800: #a63d00;
+
+  --color-body: #d6dce3;
+  --color-muted: #9faab7;
+  --color-faint: #6f7d8c;
+
+  --color-icon-navy: #0f1f34;
+
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bebas), var(--font-dm-sans), ui-sans-serif, sans-serif;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+  --shadow-lift: 0 18px 40px -20px rgb(0 0 0 / 0.75);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background-color: var(--color-flame-700);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-flame-500);
+    outline-offset: 2px;
+  }
+}
+
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 1.25rem;
+  @variant sm {
+    padding-inline: 1.75rem;
+  }
+  @variant lg {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Small uppercase orange label that sits above most section headings. */
+@utility eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-flame-500);
+}
+
+/* The hero headline treatment: heavy condensed caps, tight leading. */
+@utility display-hero {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+}
+
+/* Fades the hero photograph into the navy field that carries the headline. */
+@utility hero-scrim {
+  background-image: linear-gradient(
+    to right,
+    var(--color-ink-deep) 0%,
+    color-mix(in srgb, var(--color-ink-deep) 90%, transparent) 26%,
+    color-mix(in srgb, var(--color-ink-deep) 45%, transparent) 48%,
+    transparent 70%
+  );
+}
+
+/* Warm glow behind the emergency band, anchored to its left edge. */
+@utility heat-glow {
+  background-image: radial-gradient(
+    28rem 22rem at 4% 50%,
+    color-mix(in srgb, var(--color-flame-500) 55%, transparent) 0%,
+    color-mix(in srgb, var(--color-flame-700) 22%, transparent) 38%,
+    transparent 72%
+  );
+}
+
+@keyframes marquee-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-rise {
+  animation: marquee-fade 0.5s ease-out both;
+}
