@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "service-first-hvac",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-28",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "observability": {
+    "enabled": true,
+  },
+  // Workers Builds still runs `npm run build` (next build) then
+  // `npx wrangler versions upload`. OpenNext must rebuild Next.js itself
+  // (vanilla next output is not a standalone bundle).
+  "build": {
+    "command": "npx opennextjs-cloudflare build",
+  },
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "service-first-hvac",
+    },
+  ],
+  "images": {
+    "binding": "IMAGES",
+  },
+}
