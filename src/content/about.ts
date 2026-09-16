@@ -7,7 +7,10 @@ export const aboutHero = {
   quote:
     "At Service First Heating & Air, we believe comfort shouldn't be something you have to think about. Your heating and cooling system should just work. When it doesn't, that's where we come in.",
   badges: ["OH Lic# 49424", "Locally Owned & Operated"],
-  image: { src: "/team/crew.jpg", alt: "The Service First Heating & Air team" },
+  image: {
+    src: "/about-hvac-unit.jpg",
+    alt: "Outdoor HVAC condenser unit beside a home on a landscaped lawn",
+  },
 } as const;
 
 export const story = {
