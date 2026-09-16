@@ -8,4 +8,8 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-initOpenNextCloudflareForDev();
+// Bindings for `next dev` only. Do not run during `next build` (Appwrite and
+// other Node hosts) — this pulls in Wrangler/miniflare and can fail CI.
+if (process.argv.includes("dev")) {
+  initOpenNextCloudflareForDev();
+}
