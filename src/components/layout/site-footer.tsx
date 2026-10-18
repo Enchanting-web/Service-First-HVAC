@@ -42,7 +42,6 @@ export function SiteFooter() {
           <div>
             <Logo size="lg" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">{site.tagline}</p>
-            <p className="mt-5 text-[0.95rem] font-semibold text-white">{site.license}</p>
           </div>
 
           <FooterColumn heading="Quick Links" links={footerQuickLinks} />
@@ -76,9 +75,18 @@ export function SiteFooter() {
         </div>
 
         <div className="border-t border-hairline">
-          <div className="container-page flex flex-col items-center justify-center gap-2 py-5 text-center text-sm text-muted sm:flex-row sm:gap-6">
+          <div className="container-page flex flex-col flex-wrap items-center justify-center gap-2 py-5 text-center text-sm text-muted sm:flex-row sm:gap-6">
             <p>
               © {new Date().getFullYear()} {site.name}. All rights reserved.
+            </p>
+            <p>
+              Designed and built by{" "}
+              <a
+                href="https://serviceplanpro.io"
+                className="text-white transition-colors hover:text-flame-500"
+              >
+                TradeBuilds
+              </a>
             </p>
             <span aria-hidden className="hidden text-faint sm:inline">
               •

@@ -41,12 +41,6 @@ export const contactMethods: readonly ContactMethod[] = [
     lines: addressLines,
     icon: "map-pin",
   },
-  {
-    label: "License",
-    detail: "Fully Licensed & Insured",
-    value: site.license,
-    icon: "shield-check",
-  },
 ];
 
 export const assistant = {
@@ -138,7 +132,7 @@ export const serviceAreaSection = {
 } as const;
 
 export const form = {
-  heading: "Schedule a Service Request",
+  heading: "Book Your Service Visit",
   serviceTypes: [
     "AC Repair",
     "Furnace Repair",

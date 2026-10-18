@@ -20,7 +20,7 @@ const ServiceAreaMap = dynamic(
 export function MapPanel() {
   return (
     <div className="overflow-hidden rounded-2xl border border-hairline bg-surface">
-      <div className="h-[22rem] w-full sm:h-[26rem]">
+      <div className="isolate h-[22rem] w-full sm:h-[26rem]">
         <ServiceAreaMap />
       </div>
       <div className="flex items-center gap-3 border-t border-hairline px-6 py-4">

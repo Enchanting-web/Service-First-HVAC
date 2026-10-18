@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 /**
- * Handles both service requests and newsletter signups so there is a single
- * place to plug in an email provider.
+ * Legacy contact endpoint. Service appointments are booked through Google's
+ * embedded booking page; this endpoint must not acknowledge unrecorded bookings.
  *
  * TODO: send these somewhere. Drop in Resend (or the provider of your choice)
  * where sendNotification is called below and set the API key in the
@@ -56,14 +56,18 @@ export async function POST(request: Request) {
     );
   }
 
+  if (parsed.data.intent === "service") {
+    return NextResponse.json(
+      { ok: false, error: "Please use the appointment calendar or call us to book service." },
+      { status: 503 },
+    );
+  }
+
   await sendNotification(parsed.data);
 
   return NextResponse.json({
     ok: true,
-    message:
-      parsed.data.intent === "newsletter"
-        ? "You're on the list."
-        : "Request received — we'll call you to confirm a time.",
+    message: "You're on the list.",
   });
 }
 

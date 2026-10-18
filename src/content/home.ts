@@ -39,7 +39,6 @@ export const heroStats: { label: string; value: string; detail: string; icon: Ic
 
 export const trustSignals: { label: string; icon: IconName }[] = [
   { label: "Licensed & Insured", icon: "shield-check" },
-  { label: "OH Lic# 49424", icon: "shield" },
   { label: "24/7 Emergency Service", icon: "clock-alert" },
   { label: "Satisfaction Guaranteed", icon: "shield-check" },
 ];

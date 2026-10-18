@@ -61,15 +61,51 @@ Mirrors the previous site's URLs so no inbound link breaks:
 (1–7) · `/service-areas` · `/service-areas/[city]` (22 cities) · `/contact` ·
 `/privacy-policy` · `/terms-conditions`
 
-## Contact form
+## Appointment booking
+
+The contact page embeds a Google Calendar appointment schedule. Until a valid
+booking URL is configured, it shows a call-to-book message, with no sample times
+or booking confirmation. The old service-request API returns 503 rather than
+claiming that an unrecorded request was received.
+
+To connect the real calendar:
+
+1. In the business's Google Calendar, create an **Appointment schedule** on the
+   calendar that should receive appointments. Confirm the account supports the
+   required scheduling features.
+2. Set the appointment duration, America/New_York timezone, working hours,
+   advance notice, travel buffers, and daily booking limit. Configure busy-calendar
+   checks for the technician calendars that must block availability.
+3. Set the meeting location to in-person service. Require phone, service address,
+   service type, and issue details in Google's booking form, alongside name and
+   email. Configure the booking notifications available for the account.
+4. Under the booking page's **Sharing options → Website embed → Inline booking
+   page**, copy the iframe's `src` URL (not the full HTML or a calendar-sharing URL).
+5. Set `GOOGLE_CALENDAR_BOOKING_URL` to that public URL in `.env.local` locally
+   and in the hosting environment for deployment. Rebuild and redeploy the app;
+   the booking URL is read when the contact page is generated at build time.
+   It must use `https://calendar.google.com/calendar/appointments/schedules/…`
+   (the `/calendar/u/0/appointments/schedules/…` form is also accepted).
+6. Verify available and busy times, make one authorized test booking, confirm the
+   event and service details arrive in the correct calendar, check the customer's
+   confirmation email, and cancel the test appointment.
+
+No Google credentials are stored by the website. Google's booking page handles
+availability and confirmation. A configured URL alone is not proof of successful
+booking delivery; complete the live verification before launch.
+
+Official setup: https://support.google.com/calendar/answer/10729749
+Official embedding: https://support.google.com/calendar/answer/10733297
+
+## Legacy contact endpoint
 
 `POST /api/contact` validates with zod and handles both service requests and
 newsletter signups, returning a real success/error shape that the UI renders as
 pending, success, and error states.
 
-**Before launch:** the route logs submissions and returns success without
-delivering anything. Plug an email provider into `sendNotification()` in
-`src/app/api/contact/route.ts`.
+**Before launch:** newsletter signups still log submissions and return success
+without delivering anything. Plug a newsletter provider into `sendNotification()`
+in `src/app/api/contact/route.ts`. Service submissions to this endpoint are disabled.
 
 ## Assets
 

@@ -49,11 +49,11 @@ export default function AboutPage() {
             <Image
               src={aboutHero.image.src}
               alt={aboutHero.image.alt}
-              width={1000}
-              height={750}
+              width={1536}
+              height={1024}
               sizes="(min-width: 1024px) 560px, 100vw"
               className="h-full w-full object-cover"
-              priority
+              preload
             />
             <div className="absolute inset-x-0 bottom-0 flex gap-8 bg-gradient-to-t from-ink-deep via-ink-deep/85 to-transparent px-6 pt-14 pb-6">
               {story.stats.map((stat) => (
@@ -122,7 +122,7 @@ export default function AboutPage() {
       <section className="bg-ink py-16 sm:py-20">
         <div className="container-page">
           <SectionHeading eyebrow="Our Team" title="The People Behind the Service" />
-          <div className="mx-auto mt-10 grid max-w-3xl gap-6 sm:grid-cols-2">
+          <div className="mx-auto mt-10 grid max-w-sm gap-6">
             {team.map((member) => (
               <article
                 key={member.name}

@@ -83,7 +83,6 @@ export default function OpengraphImage() {
           >
             {site.phone.display}
           </span>
-          <span style={{ color: "#9faab7" }}>{site.license}</span>
         </div>
       </div>
     ),
