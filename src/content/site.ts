@@ -10,7 +10,7 @@ export const site = {
   /** Rendered as two-tone in the logo lockup: "SERVICE" light, "FIRST" orange. */
   wordmark: { lead: "SERVICE", accent: "FIRST", sub: "Heating & Air LLC" },
   tagline: "Top-tier HVAC for residential and commercial customers in the Cincinnati and Dayton metro.",
-  url: "https://servicefirsthvac.com",
+  url: "https://hvacservicefirst.com",
   phone: { display: "+1 (513) 268-7290", href: "tel:+15132687290", raw: "+15132687290" },
   email: "office@hvacservicefirst.com",
   address: {
