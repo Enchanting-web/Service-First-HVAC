@@ -6,8 +6,8 @@ export const aboutHero = {
   heading: "About Service First",
   quote:
     "At Service First Heating & Air, we believe comfort shouldn't be something you have to think about. Your heating and cooling system should just work. When it doesn't, that's where we come in.",
-  badges: ["OH Lic# 49424", "Locally Owned & Operated"],
-  image: { src: "/team/crew.jpg", alt: "The Service First Heating & Air team" },
+  badges: ["Locally Owned & Operated"],
+  image: { src: "/team/zeek-van-left.png", alt: "Zeek Ford standing beside the Service First Heating & Air service van" },
 } as const;
 
 export const story = {
@@ -86,15 +86,9 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   {
-    name: "Bryan Buckley",
+    name: 'Xadrian "Zeek" Ford',
     role: "Owner",
-    image: "/team/bryan-buckley.jpg",
-    highlights: ["15+ Years Experience", "Master HVAC Certified", "Monroe Local"],
-  },
-  {
-    name: "Justin Eglian",
-    role: "HVAC Specialist",
-    image: "/team/justin-eglian.jpg",
+    image: "/team/justin-eglian-refined.png",
     highlights: ["Expert Troubleshooter", "System Design Pro", "Customer Favorite"],
   },
 ];

@@ -8,21 +8,13 @@ import { site } from "@/content/site";
 
 /**
  * Guided triage. Picking a symptom shows safe first checks and can hand the
- * details to the service-request form, which listens for the prefill event.
+ * customer to the appointment booking section.
  */
 export function SmartAssistant() {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Symptom | null>(null);
 
-  function handOff(symptom: Symptom) {
-    window.dispatchEvent(
-      new CustomEvent("servicefirst:prefill", {
-        detail: {
-          serviceType: symptom.serviceType,
-          message: `Smart Assistant: ${symptom.label}. Already checked: ${symptom.checks[0]}`,
-        },
-      }),
-    );
+  function handOff() {
     document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -90,10 +82,13 @@ export function SmartAssistant() {
               </ol>
 
               <div className="mt-5 flex flex-col gap-2.5">
-                <Button type="button" onClick={() => handOff(selected)}>
+                <Button type="button" onClick={handOff}>
                   <Icon name="calendar" className="size-[18px]" />
                   Still not fixed — book a technician
                 </Button>
+                <p className="text-xs leading-relaxed text-muted">
+                  When booking, describe the issue and which checks you&apos;ve tried.
+                </p>
                 <a
                   href={site.phone.href}
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-hairline-strong px-5 py-2.5 text-[0.95rem] font-semibold text-white transition-colors hover:border-flame-600"

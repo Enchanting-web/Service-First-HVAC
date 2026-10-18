@@ -7,15 +7,17 @@ import { Icon } from "@/components/ui/icon";
 import { PageHero } from "@/components/ui/page-hero";
 import { contactHero, contactMethods, form, serviceAreaSection } from "@/content/contact";
 import { site } from "@/content/site";
+import { getBookingUrl } from "@/lib/booking";
 
 export const metadata: Metadata = {
   title: "Contact & Schedule Service",
   description:
-    "Schedule HVAC service with Service First Heating & Air in Monroe OH, or call (513) 813-1945 for 24/7 emergency heating and cooling help.",
+    "Schedule HVAC service with Service First Heating & Air in Monroe OH, or call +1 (513) 268-7290 for 24/7 emergency heating and cooling help.",
   alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {
+  const bookingUrl = getBookingUrl();
   return (
     <>
       <PageHero
@@ -80,14 +82,15 @@ export default function ContactPage() {
             <SmartAssistant />
           </div>
 
-          <div id="schedule" className="scroll-mt-32">
+          <div id="schedule" className="scroll-mt-48">
             <h2 className="text-[1.6rem] leading-tight sm:text-[1.85rem]">{form.heading}</h2>
             <p className="mt-3 text-body">
-              Tell us what&apos;s going on and we&apos;ll call to confirm a time. Emergencies go
-              straight to dispatch.
+              {bookingUrl
+                ? "Choose an available time, tell us what you need, and confirm your visit online."
+                : "Online booking is being set up. Call our team to schedule your service visit."}
             </p>
             <div className="mt-7">
-              <ContactForm />
+              <ContactForm bookingUrl={bookingUrl} />
             </div>
           </div>
         </div>

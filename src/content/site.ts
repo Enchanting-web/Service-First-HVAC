@@ -11,10 +11,8 @@ export const site = {
   wordmark: { lead: "SERVICE", accent: "FIRST", sub: "Heating & Air LLC" },
   tagline: "Top-tier HVAC for residential and commercial customers in the Cincinnati and Dayton metro.",
   url: "https://servicefirsthvac.com",
-  phone: { display: "(513) 813-1945", href: "tel:5138131945", raw: "+15138131945" },
-  email: "bryan@servicefirsthvac.com",
-  license: "OH Lic# 49424",
-  licenseNumber: "49424",
+  phone: { display: "+1 (513) 268-7290", href: "tel:+15132687290", raw: "+15132687290" },
+  email: "office@hvacservicefirst.com",
   address: {
     street: "638 S Main St.",
     city: "Monroe",
@@ -89,6 +87,6 @@ export const legalLinks: readonly NavLink[] = [
 
 /** Site-wide promotional banner shown directly under the header. */
 export const alertBanner = {
-  headline: "Heat Wave Alert — Same-Day AC Service",
-  detail: "High temps. Fast response. We're here.",
+  headline: "Don't Fall Behind on Fall Maintenance",
+  detail: "Appointments fill up fast. Schedule yours now!",
 } as const;

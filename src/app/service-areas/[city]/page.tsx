@@ -63,14 +63,13 @@ export default async function ServiceAreaPage({ params }: PageProps<"/service-ar
           </h1>
           <p className="mt-5 max-w-3xl text-[1.05rem] leading-relaxed text-body">{area.blurb}</p>
 
-          <dl className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Stat
               icon="timer"
               label="Drive time from shop"
               value={area.driveTime === 0 ? "Our shop" : `~${area.driveTime} min`}
             />
             <Stat icon="map-pin" label="Primary ZIP" value={area.zip} />
-            <Stat icon="shield-check" label="License" value={`OH #${site.licenseNumber}`} />
             <Stat icon="phone" label="24/7 Dispatch" value={site.phone.display} href={site.phone.href} />
           </dl>
         </div>

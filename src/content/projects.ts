@@ -49,7 +49,7 @@ export const projects: Project[] = [
 ];
 
 /** Every photo in the media library, project cards included. */
-const allPhotos: { src: string; alt: string }[] = [
+const allPhotos: { src: string; alt: string; objectPosition?: string }[] = [
   { src: "/work/commercial-hvac-installation.jpg", alt: "Commercial rooftop HVAC installation" },
   { src: "/work/residential-furnace-upgrade.jpg", alt: "New residential furnace after upgrade" },
   { src: "/work/residential-ac-unit.jpg", alt: "Serviced residential air conditioning unit" },
@@ -58,7 +58,11 @@ const allPhotos: { src: string; alt: string }[] = [
   { src: "/work/emergency-repair.jpg", alt: "Technician completing an emergency HVAC repair" },
   { src: "/work/york-ac-unit-wall-mount.jpg", alt: "Wall-mounted York air conditioning unit" },
   { src: "/work/ac-cleaning-before-after.jpg", alt: "Air conditioner coil cleaning before and after" },
-  { src: "/team/crew.jpg", alt: "The Service First crew in front of the service van" },
+  {
+    src: "/work/zeek-ac-service-smile.png",
+    alt: "Zeek smiling beside an outdoor air conditioning unit during service",
+    objectPosition: "center 35%",
+  },
 ];
 
 /**
