@@ -1,5 +1,5 @@
 /** Cloudflare OpenNext config without importing `@opennextjs/cloudflare`. */
-export default {
+const config = {
   default: {
     override: {
       wrapper: "cloudflare-node",
@@ -23,3 +23,5 @@ export default {
     },
   },
 };
+
+export default config;

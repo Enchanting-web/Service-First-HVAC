@@ -82,7 +82,8 @@ To connect the real calendar:
 4. Under the booking page's **Sharing options → Website embed → Inline booking
    page**, copy the iframe's `src` URL (not the full HTML or a calendar-sharing URL).
 5. Set `GOOGLE_CALENDAR_BOOKING_URL` to that public URL in `.env.local` locally
-   and in the hosting environment for deployment. Restart/rebuild the app.
+   and in the hosting environment for deployment. Rebuild and redeploy the app;
+   the booking URL is read when the contact page is generated at build time.
    It must use `https://calendar.google.com/calendar/appointments/schedules/…`
    (the `/calendar/u/0/appointments/schedules/…` form is also accepted).
 6. Verify available and busy times, make one authorized test booking, confirm the

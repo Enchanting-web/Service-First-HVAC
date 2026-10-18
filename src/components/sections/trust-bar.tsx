@@ -5,7 +5,7 @@ import { trustSignals } from "@/content/home";
 export function TrustBar() {
   return (
     <section className="border-b border-hairline bg-ink-deep">
-      <ul className="container-page grid grid-cols-2 gap-y-5 py-6 sm:grid-cols-4 sm:divide-x sm:divide-hairline-strong">
+      <ul className="container-page grid grid-cols-1 gap-y-5 py-6 sm:grid-cols-3 sm:divide-x sm:divide-hairline-strong">
         {trustSignals.map((signal) => (
           <li
             key={signal.label}
