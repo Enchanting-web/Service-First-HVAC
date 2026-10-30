@@ -26,7 +26,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...serviceAreas.map((area) => ({
       url: `${site.url}/service-areas/${area.slug}`,
-      lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
