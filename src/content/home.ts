@@ -4,11 +4,11 @@ import type { IconName } from "@/components/ui/icon";
 
 export const hero = {
   /** Rendered in orange above the main line. */
-  kicker: "AC Out?",
+  kicker: "Furnace Down?",
   headline: "We're on it",
   headlineAccent: "—",
   headlineEnd: "Today.",
-  body: "Cincinnati & Dayton are baking. Our techs are dispatching now — most homes cooled back down in",
+  body: "Cincinnati & Dayton are cooling off. Our techs are dispatching now — most homes are warm again in",
   bodyStrong: "hours, not days.",
   image: {
     src: "/hero-technician.jpg",
