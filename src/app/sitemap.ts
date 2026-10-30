@@ -5,8 +5,6 @@ import { site } from "@/content/site";
 
 /** Mirrors the previous site's URL structure so existing links keep working. */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
   const staticRoutes: { path: string; priority: number; changeFrequency: "weekly" | "monthly" | "yearly" }[] = [
     { path: "", priority: 1, changeFrequency: "weekly" },
     { path: "/services", priority: 0.9, changeFrequency: "monthly" },
@@ -23,7 +21,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticRoutes.map((route) => ({
       url: `${site.url}${route.path}`,
-      lastModified: now,
       changeFrequency: route.changeFrequency,
       priority: route.priority,
     })),
