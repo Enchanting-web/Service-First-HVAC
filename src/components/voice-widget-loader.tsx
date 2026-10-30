@@ -8,7 +8,7 @@ export function VoiceWidgetLoader() {
     <Script
       src={WIDGET_SRC}
       data-agent-id={AGENT_ID}
-      strategy="afterInteractive"
+      strategy="lazyOnload"
     />
   )
 }
