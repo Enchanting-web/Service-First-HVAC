@@ -4,6 +4,7 @@ import { AppwritePing } from "@/components/appwrite-ping";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { LocalBusinessSchema } from "@/components/seo/local-business-schema";
+import { VoiceWidgetLoader } from "@/components/voice-widget-loader";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -63,14 +64,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-scroll-behavior="smooth"
       className={`${dmSans.variable} ${bebas.variable} h-full`}
     >
-      <head>
-        <script
-          src="https://ionos.ai-voicereceptionist.com/widget/v1/embed.js"
-          data-agent-id="b9b5af44-1337-4373-a4cd-13e80e75ec3b"
-          defer
-        />
-      </head>
       <body className="flex min-h-full flex-col bg-ink">
+        <VoiceWidgetLoader />
         <AppwritePing />
         <LocalBusinessSchema />
         <SiteHeader />
