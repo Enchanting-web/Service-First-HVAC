@@ -1,79 +1,110 @@
-import { ButtonLink } from "@/components/ui/button";
+"use client";
+
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { site } from "@/content/site";
+import { localDate, requestTimes, serviceTypes } from "@/lib/service-request";
 
-/** Google owns availability, appointment details, and booking confirmation. */
-export function ContactForm({ bookingUrl }: { bookingUrl: string | null }) {
+const inputStyle = "mt-2 w-full rounded-lg border border-hairline-strong bg-ink px-3 py-3 text-white outline-none focus:border-flame-500 focus:ring-2 focus:ring-flame-500/30 disabled:opacity-50";
+
+export function ContactForm() {
+  const [available, setAvailable] = useState<boolean | null>(null);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [today] = useState(() => localDate());
+  const requestId = useRef("");
+  const lastSubmission = useRef("");
+  const feedback = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/appointments", { cache: "no-store", signal: controller.signal })
+      .then((response) => response.ok ? response.json() : Promise.reject())
+      .then((data) => setAvailable(data.available === true))
+      .catch(() => { if (!controller.signal.aborted) setAvailable(false); });
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => { if (success || error) feedback.current?.focus(); }, [success, error]);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (sending || !available) return;
+    const data = new FormData(event.currentTarget);
+    const fields = Object.fromEntries(data.entries());
+    const fingerprint = JSON.stringify(fields);
+    if (lastSubmission.current !== fingerprint) {
+      requestId.current = crypto.randomUUID();
+      lastSubmission.current = fingerprint;
+    }
+    setSending(true);
+    setError("");
+    try {
+      const response = await fetch("/api/appointments", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...fields, acknowledge: data.has("acknowledge"), requestId: requestId.current }),
+        signal: AbortSignal.timeout(45000),
+      });
+      const result = await response.json();
+      if (!response.ok || result.status !== "pending" || !result.id) throw new Error(result.error || "Your request could not be verified. Please try again or call us.");
+      setSuccess(result.message);
+    } catch (cause) {
+      setError(cause instanceof Error && cause.name !== "TimeoutError" ? cause.message : "We couldn't verify that your request was saved. Retry with the same details or call our team.");
+    } finally { setSending(false); }
+  }
+
   return (
     <div className="overflow-hidden rounded-2xl border border-hairline bg-surface shadow-card">
       <div className="border-b border-hairline p-6 sm:p-8">
-        <div className="flex items-center gap-3">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-flame-700 text-white">
-            <Icon name="calendar-check" className="size-6" />
-          </span>
-          <div>
-            <p className="eyebrow">Service First appointments</p>
-            <h3 className="mt-1 text-xl">A time that works for you.</h3>
-          </div>
-        </div>
-        <ol className="mt-7 grid gap-4 text-sm text-body sm:grid-cols-3">
-          {["Choose an open time", "Add your service details", "Confirm your appointment"].map((step, index) => (
+        <p className="eyebrow">Your comfort starts here</p>
+        <h3 className="mt-2 text-2xl">Tell us what you need.</h3>
+        <ol className="mt-6 grid gap-4 text-sm text-body sm:grid-cols-3">
+          {["Tell us about your system", "Request a preferred time", "Our team confirms your visit"].map((step, index) => (
             <li key={step} className="flex items-start gap-2.5">
-              <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-flame-700/50 bg-flame-700/10 text-xs font-bold text-flame-500">
-                {index + 1}
-              </span>
-              <span className="pt-0.5">{step}</span>
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-flame-700/20 text-xs font-bold text-flame-500">{index + 1}</span>
+              <span>{step}</span>
             </li>
           ))}
         </ol>
       </div>
-
-      {bookingUrl ? (
-        <>
-          <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm sm:px-8">
-            <span className="flex items-center gap-2 text-body">
-              <Icon name="clock" className="size-4 text-flame-500" />
-              Choose from the available appointments below
-            </span>
-            <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-flame-500 underline underline-offset-4">
-              Open booking page
-            </a>
-          </div>
-          <div className="bg-white">
-            <iframe
-              title="Book a Service First service appointment with Google Calendar"
-              src={bookingUrl}
-              className="h-[760px] w-full border-0 sm:h-[800px]"
-              loading="lazy"
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
-          </div>
-          <p className="px-6 py-4 text-sm leading-relaxed text-muted sm:px-8">
-            Complete your booking in the calendar above. Your appointment is booked only after Google shows your confirmation.
-            If the calendar doesn&apos;t load, use the booking-page link or call us.
-          </p>
-        </>
-      ) : (
-        <div className="px-6 py-10 text-center sm:px-8">
-          <Icon name="calendar" className="mx-auto size-10 text-flame-500" />
-          <h3 className="mt-4 text-xl">Online appointment booking is coming soon</h3>
-          <p className="mx-auto mt-3 max-w-md leading-relaxed text-muted">
-            Call our team to find an appointment and tell us what your system needs.
-          </p>
-          <ButtonLink href={site.phone.href} className="mt-6">
-            <Icon name="phone" className="size-4" />
-            {site.phone.display}
-          </ButtonLink>
+      {success ? (
+        <div ref={feedback} tabIndex={-1} role="status" className="p-6 outline-none sm:p-8">
+          <Icon name="circle-check" className="size-10 text-flame-500" />
+          <h3 className="mt-4 text-xl">Request received — pending approval</h3>
+          <p className="mt-3 leading-relaxed text-body">{success}</p>
+          <p className="mt-3 text-sm text-muted">Your preferred time is not reserved. Please wait for our team to confirm before making arrangements.</p>
         </div>
+      ) : (
+        <form onSubmit={submit} className="p-6 sm:p-8">
+          {available === false && (
+            <p role="status" className="mb-6 rounded-lg border border-hairline-strong bg-ink p-4 text-sm text-body">
+              Online requests are temporarily unavailable. Call <a className="font-semibold text-flame-500 underline" href={site.phone.href}>{site.phone.display}</a> to request service.
+            </p>
+          )}
+          <fieldset disabled={sending || available !== true} className="grid gap-5 sm:grid-cols-2">
+            <legend className="sr-only">Service request details</legend>
+            <label className="text-sm font-medium text-body">Full name<input className={inputStyle} name="name" autoComplete="name" minLength={2} maxLength={120} required /></label>
+            <label className="text-sm font-medium text-body">Phone number<input className={inputStyle} name="phone" type="tel" autoComplete="tel" minLength={10} maxLength={30} required /></label>
+            <label className="text-sm font-medium text-body sm:col-span-2">Email address<input className={inputStyle} name="email" type="email" autoComplete="email" maxLength={254} required /></label>
+            <label className="text-sm font-medium text-body sm:col-span-2">Service address, city, state, and ZIP<input className={inputStyle} name="address" autoComplete="street-address" minLength={8} maxLength={300} required /></label>
+            <label className="text-sm font-medium text-body sm:col-span-2">Service needed<select name="serviceType" className={inputStyle} defaultValue="" required><option value="" disabled>Select a service</option>{serviceTypes.map((type) => <option key={type}>{type}</option>)}</select></label>
+            <label className="text-sm font-medium text-body">Preferred date<input name="date" type="date" min={today} className={inputStyle} required aria-describedby="request-timing" /></label>
+            <label className="text-sm font-medium text-body">Preferred start time<select name="time" className={inputStyle} defaultValue="" required aria-describedby="request-timing"><option value="" disabled>Select a time</option>{requestTimes.map((time) => <option key={time} value={time}>{Number(time.slice(0, 2)) % 12 || 12}:00 {Number(time.slice(0, 2)) < 12 ? "AM" : "PM"}</option>)}</select></label>
+            <p id="request-timing" className="-mt-2 text-xs leading-relaxed text-muted sm:col-span-2">Monday–Friday, 8 AM–5 PM Eastern. Choose a preferred start time within the next 90 days. Times shown are preferences, subject to team approval. Visit length depends on the service.</p>
+            <label className="text-sm font-medium text-body sm:col-span-2">Tell us about your system <span className="text-muted">(optional)</span><textarea name="message" rows={4} maxLength={2000} className={inputStyle} placeholder="What needs attention? Include equipment details or access instructions if helpful." /></label>
+            <div hidden aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
+            <label className="flex items-start gap-3 text-sm leading-relaxed text-body sm:col-span-2"><input name="acknowledge" type="checkbox" required className="mt-1 size-4 shrink-0 accent-orange-600" />I understand this is a request. My appointment is not confirmed until Service First contacts me.</label>
+            <Button type="submit" className="w-full sm:col-span-2">{sending ? "Sending your request…" : available === null ? "Checking online requests…" : "Request Service"}<Icon name="arrow-right" className="size-4" /></Button>
+          </fieldset>
+          {error && <div ref={feedback} tabIndex={-1} role="alert" className="mt-5 rounded-lg border border-red-500/50 p-4 text-sm text-red-300 outline-none">{error}</div>}
+          <p className="mt-4 text-xs leading-relaxed text-muted">We use these details to handle your service request. <a href="/privacy-policy" className="underline">Privacy policy</a>. Northern Kentucky requests require service-area confirmation.</p>
+        </form>
       )}
-
-      <div className="flex items-start gap-3 border-t border-hairline bg-ink px-6 py-5 sm:px-8">
-        <Icon name="siren" className="mt-0.5 size-5 shrink-0 text-flame-500" />
-        <p className="text-sm leading-relaxed text-body">
-          <strong className="text-white">Need urgent help?</strong> Call{" "}
-          <a href={site.phone.href} className="font-semibold text-flame-500">{site.phone.display}</a>
-          {" "}for emergency service.
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-hairline bg-ink px-6 py-5 sm:px-8">
+        <p className="max-w-sm text-sm text-body"><strong className="text-white">Need emergency service?</strong> Call us directly, including after hours.</p>
+        <ButtonLink href={site.phone.href} variant="outline"><Icon name="phone" className="size-4" />{site.phone.display}</ButtonLink>
       </div>
     </div>
   );

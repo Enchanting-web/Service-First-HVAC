@@ -61,41 +61,29 @@ Mirrors the previous site's URLs so no inbound link breaks:
 (1–7) · `/service-areas` · `/service-areas/[city]` (22 cities) · `/contact` ·
 `/privacy-policy` · `/terms-conditions`
 
-## Appointment booking
+## Appointment requests and Google Calendar
 
-The contact page embeds a Google Calendar appointment schedule. Until a valid
-booking URL is configured, it shows a call-to-book message, with no sample times
-or booking confirmation. The old service-request API returns 503 rather than
-claiming that an unrecorded request was received.
+The custom form at `/contact#schedule` submits requests to `/api/appointments`.
+Customers select a preferred weekday start time (8 AM–4 PM Eastern, within 90 days),
+provide contact/service details, and acknowledge that the visit needs team approval.
+Times are preferences, not a public availability feed. Emergency work is routed to phone.
 
-To connect the real calendar:
+Google Calendar is the durable request store. Requests are private, tentative,
+non-blocking events labeled `[PENDING]` on **Scheduled Appointments**. The team page
+at `/admin/appointments` requires a server-configured access key to read any requests
+or approve/decline them. Approval checks that calendar for busy events and changes
+the request to a confirmed, blocking one-hour appointment. Declining cancels it.
+The team must contact the customer separately; no customer invitations or automatic
+confirmation emails are sent. Adjust durations and arrange alternate times in Calendar.
 
-1. In the business's Google Calendar, create an **Appointment schedule** on the
-   calendar that should receive appointments. Confirm the account supports the
-   required scheduling features.
-2. Set the appointment duration, America/New_York timezone, working hours,
-   advance notice, travel buffers, and daily booking limit. Configure busy-calendar
-   checks for the technician calendars that must block availability.
-3. Set the meeting location to in-person service. Require phone, service address,
-   service type, and issue details in Google's booking form, alongside name and
-   email. Configure the booking notifications available for the account.
-4. Under the booking page's **Sharing options → Website embed → Inline booking
-   page**, copy the iframe's `src` URL (not the full HTML or a calendar-sharing URL).
-5. Set `GOOGLE_CALENDAR_BOOKING_URL` to that public URL in `.env.local` locally
-   and in the hosting environment for deployment. Rebuild and redeploy the app;
-   the booking URL is read when the contact page is generated at build time.
-   It must use `https://calendar.google.com/calendar/appointments/schedules/…`
-   (the `/calendar/u/0/appointments/schedules/…` form is also accepted).
-6. Verify available and busy times, make one authorized test booking, confirm the
-   event and service details arrive in the correct calendar, check the customer's
-   confirmation email, and cancel the test appointment.
+Connection setup, credentials, live verification, and operating limits:
+[Google Calendar booking setup](docs/google-calendar-booking.md).
 
-No Google credentials are stored by the website. Google's booking page handles
-availability and confirmation. A configured URL alone is not proof of successful
-booking delivery; complete the live verification before launch.
-
-Official setup: https://support.google.com/calendar/answer/10729749
-Official embedding: https://support.google.com/calendar/answer/10733297
+The form stays unavailable until server credentials and an admin key are configured.
+A successful response is returned only after Google saves the pending request.
+Retrying unchanged details uses the same event ID to prevent duplicate submissions.
+Google credentials stay on the server. No production deployment or live booking is
+implied by local tests.
 
 ## Legacy contact endpoint
 
