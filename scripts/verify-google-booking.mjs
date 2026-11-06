@@ -1,20 +1,21 @@
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
-import { createServiceRequest, listServiceRequests, reviewServiceRequest } from '../src/lib/google-booking.ts';
-import { appointmentStart, localDate } from '../src/lib/service-request.ts';
+import { tsImport } from 'tsx/esm/api';
 
 if (!process.argv.includes('--live')) {
   console.error('This creates and removes temporary Calendar test events, without customer invitations. Run with --live only when authorized.');
   process.exit(1);
 }
 process.loadEnvFile('.env.local');
+const { createServiceRequest, listServiceRequests, reviewServiceRequest, selectedCalendar } = await tsImport('../src/lib/google-booking.ts', import.meta.url);
+const { appointmentStart, localDate } = await tsImport('../src/lib/service-request.ts', import.meta.url);
 // Enable only this process, never the public website or the environment file.
 process.env.BOOKING_REQUESTS_ENABLED = 'true';
 const originalFetch = globalThis.fetch;
 const cleanupIds = new Set();
 let authorization;
 let failures = false;
-const calendarBase = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(process.env.GOOGLE_BOOKING_CALENDAR_ID)}/events`;
+const calendarBase = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(process.env.GOOGLE_BOOKING_CALENDAR_ID || selectedCalendar)}/events`;
 globalThis.fetch = async (url, init) => {
   if (String(url).startsWith(calendarBase)) authorization = init?.headers?.Authorization;
   const response = await originalFetch(url, init);

@@ -14,6 +14,7 @@ if (!/^BOOKING_ADMIN_TOKEN=.+$/m.test(existing)) values.BOOKING_ADMIN_TOKEN = ra
 for (const [key, value] of Object.entries(values)) {
   const line = `${key}=${JSON.stringify(value)}`;
   const regex = new RegExp(`^${key}=.*$`, 'm');
+  if (key.startsWith('GOOGLE_') && regex.test(existing)) continue;
   existing = regex.test(existing) ? existing.replace(regex, () => line) : `${existing.trimEnd()}\n${line}\n`;
 }
 await writeFile(path, existing.trimStart(), { mode: 0o600 });
