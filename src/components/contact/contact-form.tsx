@@ -47,11 +47,11 @@ export function ContactForm() {
         body: JSON.stringify({ ...fields, acknowledge: data.has("acknowledge"), requestId: requestId.current }),
         signal: AbortSignal.timeout(45000),
       });
-      const result = await response.json();
-      if (!response.ok || result.status !== "pending" || !result.id) throw new Error(result.error || "Your request could not be verified. Please try again or call us.");
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.status !== "pending" || !result.id) throw new Error(typeof result.error === "string" ? result.error : "Your request could not be verified. Please try again or call us.");
       setSuccess(result.message);
     } catch (cause) {
-      setError(cause instanceof Error && cause.name !== "TimeoutError" ? cause.message : "We couldn't verify that your request was saved. Retry with the same details or call our team.");
+      setError(cause instanceof Error && cause.name === "Error" ? cause.message : "We couldn't verify that your request was saved. Retry with the same details or call our team.");
     } finally { setSending(false); }
   }
 
