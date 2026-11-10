@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vercel/oidc": "^4.0.6",
+    "@vercel/speed-insights": "^2.1.0",
     "appwrite": "^26.2.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.32.0",
