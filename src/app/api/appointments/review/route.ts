@@ -22,7 +22,9 @@ export async function POST(request: Request) {
   try {
     const text = await request.text();
     if (text.length > 4000) return reply({ error: "Invalid request." }, 413);
-    const result = z.object({ id: z.string().regex(/^[a-f0-9]{64}$/), etag: z.string().min(1).max(200), action: z.enum(["approve", "decline"]) }).safeParse(JSON.parse(text));
+    let body: unknown;
+    try { body = JSON.parse(text); } catch { return reply({ error: "Invalid request." }, 400); }
+    const result = z.object({ id: z.string().regex(/^[a-f0-9]{64}$/), etag: z.string().min(1).max(200), action: z.enum(["approve", "decline"]) }).safeParse(body);
     if (!result.success) return reply({ error: "Invalid review." }, 400);
     const event = await reviewServiceRequest(result.data.id, result.data.etag, result.data.action);
     if (result.data.action === "decline") return reply({ message: "Declined. Contact the customer to arrange another time." });

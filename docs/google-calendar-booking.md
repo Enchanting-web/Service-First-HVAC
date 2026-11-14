@@ -110,7 +110,17 @@ The old `GOOGLE_CALENDAR_BOOKING_URL` iframe setting is no longer used.
 - New requests appear in Google Calendar and on the review page; there is no separate
   staff email notification. Monitor that calendar or configure its notifications.
 
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:bbf65ceda066102669a650e3efa012a6b7c06f330592cb399c6e064551579c46 -->
+
 ## Re-run authorized live verification
+
+Use Node.js 20.12 or later (for `process.loadEnvFile`) and install development
+dependencies with `npm ci`. The script uses the project’s `tsx` runner to load
+TypeScript on Node.js 20; no native TypeScript support is required.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 ```sh
 node scripts/verify-google-booking.mjs --live

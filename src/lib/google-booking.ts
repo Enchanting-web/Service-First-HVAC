@@ -1,7 +1,7 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import type { ServiceRequest } from "./service-request";
 
-const selectedCalendar = "c_35678494ff6e81e220baa64def96be92bb70406ad87290f4ff2b64d9e01c132d@group.calendar.google.com";
+export const selectedCalendar = "c_35678494ff6e81e220baa64def96be92bb70406ad87290f4ff2b64d9e01c132d@group.calendar.google.com";
 const app = "service-first-booking";
 type CalendarEvent = {
   id: string; etag: string; summary: string; description?: string; location?: string;
