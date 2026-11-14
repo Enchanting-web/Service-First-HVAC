@@ -16,8 +16,22 @@ export function LocalBusinessSchema() {
     telephone: site.phone.raw,
     email: site.email,
     description: site.tagline,
-    image: `${site.url}/logo-mark.svg`,
+    image: [
+      `${site.url}/logo-mark.svg`,
+      `${site.url}/hero-technician.jpg`,
+    ],
+    logo: `${site.url}/logo-mark.svg`,
     priceRange: "$$",
+    currenciesAccepted: "USD",
+    paymentAccepted: "Cash, Credit Card",
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: site.phone.raw,
+      contactType: "customer service",
+      areaServed: "US-OH",
+      availableLanguage: "English",
+    },
+    knowsAbout: services.map((service) => service.title),
     address: {
       "@type": "PostalAddress",
       streetAddress: site.address.street.replace(/\.$/, ""),
