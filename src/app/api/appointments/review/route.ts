@@ -10,9 +10,11 @@ function reply(data: unknown, status = 200) {
 export async function GET(request: Request) {
   if (!isBookingAdmin(request.headers.get("authorization"))) return reply({ error: "Enter your team access key." }, 401);
   try {
-    const pageToken = new URL(request.url).searchParams.get("pageToken") || undefined;
+    const params = new URL(request.url).searchParams;
+    const pageToken = params.get("pageToken") || undefined;
     if ((pageToken?.length ?? 0) > 2048) return reply({ error: "Invalid page." }, 400);
-    return reply(await listServiceRequests(pageToken));
+    const state = params.get("state") === "declined" ? "declined" : "pending";
+    return reply(await listServiceRequests(pageToken, state));
   } catch { return reply({ error: "Could not load calendar requests. Check the connection and try again." }, 503); }
 }
 
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
     const result = z.object({ id: z.string().regex(/^[a-f0-9]{64}$/), etag: z.string().min(1).max(200), action: z.enum(["approve", "decline"]) }).safeParse(body);
     if (!result.success) return reply({ error: "Invalid review." }, 400);
     const event = await reviewServiceRequest(result.data.id, result.data.etag, result.data.action);
-    if (result.data.action === "decline") return reply({ message: "Declined. Contact the customer to arrange another time." });
+    if (result.data.action === "decline") return reply({ message: "Declined. The request stays under Declined and in Calendar so you can contact the customer to arrange another time." });
     const emailStatus = await sendApprovalEmail(event);
     return reply({ emailStatus, message: emailStatus === "accepted"
       ? "Approved and saved to Google Calendar. Confirmation email accepted by the email service; inbox delivery is not yet verified."

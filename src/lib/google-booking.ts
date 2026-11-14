@@ -76,9 +76,34 @@ async function eventResult(response: Response): Promise<CalendarEvent> {
   return response.json();
 }
 
+const digits = (value?: string) => (value ?? "").replace(/\D/g, "").slice(-10);
+
+// The public form cannot authenticate visitors, so bound how much any sender can
+// add to the calendar: a global ceiling on unreviewed requests, and a small
+// per-contact allowance. Pending events are the durable counter (no extra store).
+async function assertCapacity(id: string, data: ServiceRequest) {
+  const limit = Math.max(1, Number(process.env.BOOKING_MAX_PENDING) || 50);
+  const query = new URLSearchParams({ privateExtendedProperty: `app=${app}`, maxResults: String(limit), showDeleted: "false" });
+  query.append("privateExtendedProperty", "state=pending");
+  const response = await calendar(`?${query}`);
+  if (!response.ok) throw new BookingError(503, "Calendar could not save the request. Please try again or call our team.");
+  const page = await response.json();
+  const items: CalendarEvent[] = Array.isArray(page.items) ? page.items : [];
+  if (items.some((event) => event.id === id)) return; // idempotent retry of a saved request
+  if (page.nextPageToken || items.length >= limit) throw new BookingError(429, "We're receiving an unusually high number of online requests. Please call our team to schedule.");
+  const email = data.email.trim().toLowerCase();
+  const phone = digits(data.phone);
+  const sameContact = items.filter(({ extendedProperties }) => {
+    const saved = extendedProperties?.private;
+    return saved?.email?.trim().toLowerCase() === email || (phone.length === 10 && digits(saved?.phone) === phone);
+  }).length;
+  if (sameContact >= 3) throw new BookingError(429, "You already have requests waiting for review. Our team will contact you soon, or call us for anything urgent.");
+}
+
 export async function createServiceRequest(data: ServiceRequest, start: Date) {
   if (!bookingConfigured()) throw new BookingError(503, "Online requests are not connected yet. Please call our team.");
   const id = createHash("sha256").update(data.requestId).digest("hex");
+  await assertCapacity(id, data);
   const fingerprint = createHash("sha256").update(JSON.stringify(data)).digest("hex");
   const event = {
     id, summary: `[PENDING] ${data.serviceType} — ${data.name}`,
@@ -100,9 +125,11 @@ export async function createServiceRequest(data: ServiceRequest, start: Date) {
   return id;
 }
 
-export async function listServiceRequests(pageToken?: string) {
+export type RequestState = "pending" | "declined";
+
+export async function listServiceRequests(pageToken?: string, state: RequestState = "pending") {
   const query = new URLSearchParams({ privateExtendedProperty: `app=${app}`, maxResults: "100", showDeleted: "false" });
-  query.append("privateExtendedProperty", "state=pending");
+  query.append("privateExtendedProperty", `state=${state}`);
   if (pageToken) query.set("pageToken", pageToken);
   const response = await calendar(`?${query}`);
   if (!response.ok) throw new BookingError(503, "Could not load calendar requests.");
@@ -125,11 +152,13 @@ export async function reviewServiceRequest(id: string, etag: string, action: "ap
   const saved = await eventResult(await calendar(`/${id}?sendUpdates=none`, {
     method: "PATCH", headers: { "If-Match": etag }, body: JSON.stringify({
       summary: event.summary.replace(/^\[PENDING\]/, action === "approve" ? "[APPROVED]" : "[DECLINED]"),
-      status: action === "approve" ? "confirmed" : "cancelled",
+      // A declined request stays on the calendar (tentative, non-blocking) so staff
+      // can still see the customer's details; Google hides cancelled events.
+      status: action === "approve" ? "confirmed" : "tentative",
       transparency: action === "approve" ? "opaque" : "transparent",
       extendedProperties: { private: { ...properties, state: action === "approve" ? "approved" : "declined" } },
     }),
   }));
-  if (saved.id !== id || saved.status !== (action === "approve" ? "confirmed" : "cancelled")) throw new BookingError(503, "Could not verify the decision. Refresh the requests before trying again.");
+  if (saved.id !== id || saved.status !== (action === "approve" ? "confirmed" : "tentative") || saved.extendedProperties?.private?.state !== (action === "approve" ? "approved" : "declined")) throw new BookingError(503, "Could not verify the decision. Refresh the requests before trying again.");
   return saved;
 }

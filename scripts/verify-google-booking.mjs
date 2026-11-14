@@ -69,8 +69,10 @@ try {
   await assert.rejects(reviewServiceRequest(secondId, other.etag, 'approve'), { status: 409 });
   console.log('Live busy-time conflict guard: PASS');
   const declined = await reviewServiceRequest(secondId, other.etag, 'decline');
-  assert.equal(declined.status, 'cancelled');
-  console.log('Live decline: PASS');
+  assert.equal(declined.status, 'tentative'); assert.equal(declined.transparency, 'transparent');
+  assert.equal(declined.extendedProperties.private.state, 'declined');
+  assert.ok((await listServiceRequests(undefined, 'declined')).items.some((event) => event.id === secondId), 'declined request stays visible to staff');
+  console.log('Live decline: PASS (kept visible, non-blocking)');
 } catch (error) {
   console.error('Live verification did not complete:', error.message);
   failures = true;

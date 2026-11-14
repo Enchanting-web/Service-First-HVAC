@@ -31,7 +31,7 @@ globalThis.fetch = async (url, init = {}) => {
     return json(events.get(key));
   }
   if (key) return json(events.get(key));
-  return json({ items: [...events.values()].filter(event => target.searchParams.has('timeMin') || event.extendedProperties.private.state === 'pending') });
+  return json({ items: [...events.values()].filter(event => target.searchParams.has('timeMin') || target.searchParams.getAll('privateExtendedProperty').includes(`state=${event.extendedProperties.private.state}`)) });
 };
 process.on('exit', () => {
   assert.equal(deleted, 2, 'both temporary events must be cleaned up');
