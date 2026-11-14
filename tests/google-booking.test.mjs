@@ -47,7 +47,7 @@ test('upstream errors cannot produce a received confirmation', async () => {
 
 test('retry is idempotent and cannot overwrite different request details', async () => {
   const fingerprint = createHash('sha256').update(JSON.stringify(input)).digest('hex');
-  fakeFetch((url, init) => init?.method === 'POST' ? json({}, 409) : json({ id, extendedProperties: { private: { fingerprint } } }));
+  fakeFetch((url, init) => init?.method === 'POST' ? json({}, 409) : json({ id, extendedProperties: { private: { fingerprint, state: "pending" } } }));
   assert.equal(await createServiceRequest(input, new Date()), id);
   await assert.rejects(createServiceRequest({ ...input, name: 'Different Name' }, new Date()), { status: 409 });
 });
@@ -85,4 +85,10 @@ test('declining cancels the request and Google concurrency failures are reported
     return json(pending());
   });
   await assert.rejects(reviewServiceRequest(id, 'v1', 'decline'), { status: 409 });
+});
+
+ test('retry after approval cannot misreport a reviewed appointment as pending', async () => {
+ const fingerprint = createHash('sha256').update(JSON.stringify(input)).digest('hex');
+ fakeFetch((url, init) => init?.method === 'POST' ? json({}, 409) : json({ id, status: 'confirmed', extendedProperties: { private: { fingerprint, state: 'approved' } } }));
+ await assert.rejects(createServiceRequest(input, new Date()), { status: 409 });
 });

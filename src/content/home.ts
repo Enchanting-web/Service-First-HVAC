@@ -4,12 +4,12 @@ import type { IconName } from "@/components/ui/icon";
 
 export const hero = {
   /** Rendered in orange above the main line. */
-  kicker: "AC Out?",
-  headline: "We're on it",
+  kicker: "Cold Weather Ahead?",
+  headline: "Stay warm",
   headlineAccent: "—",
-  headlineEnd: "Today.",
-  body: "Cincinnati & Dayton are baking. Our techs are dispatching now — most homes cooled back down in",
-  bodyStrong: "hours, not days.",
+  headlineEnd: "All season.",
+  body: "Get your Cincinnati or Dayton home ready for colder days with furnace repairs, heat pump service, and seasonal maintenance. We're here to help you stay",
+  bodyStrong: "comfortable all winter.",
   image: {
     src: "/hero-technician.jpg",
     alt: "Service First technician checking refrigerant pressures on a home air conditioner",
@@ -18,21 +18,21 @@ export const hero = {
 
 export const heroStats: { label: string; value: string; detail: string; icon: IconName }[] = [
   {
-    label: "Today",
-    value: "Same-Day Service",
-    detail: "Most calls handled before 6pm",
+    label: "Fall & Winter",
+    value: "Maintenance",
+    detail: "Get your heating system ready",
     icon: "clock",
   },
   {
-    label: "Avg Response",
-    value: "< 2 HR",
-    detail: "On the Way",
+    label: "Furnace &",
+    value: "Heat Pump Service",
+    detail: "Repairs, tune-ups, and replacements",
     icon: "timer",
   },
   {
-    label: "24/7",
-    value: "Emergency",
-    detail: "AC Repair",
+    label: "After-Hours",
+    value: "Emergency Help",
+    detail: "Call for urgent heating issues",
     icon: "siren",
   },
 ];
@@ -60,10 +60,10 @@ export const aboutSection = {
 } as const;
 
 export const emergencyBand = {
-  eyebrow: "Extreme Heat Warning — Until 8PM Friday",
-  heading: "Don't Sweat It Out.",
-  body: "If your AC is struggling or dead, we dispatch emergency crews now. Most homes are cooling again within 2 hours.",
-  cta: { label: "Book Emergency Repair", href: "/contact" },
+  eyebrow: "Fall & Winter Heating Service",
+  heading: "Don't Get Left in the Cold.",
+  body: "Furnace acting up or heat pump not keeping up? Call for heating repairs and after-hours emergency help, or request seasonal maintenance before the cold settles in.",
+  cta: { label: "Request Heating Service", href: "/contact#schedule" },
 } as const;
 
 export const newsletter = {

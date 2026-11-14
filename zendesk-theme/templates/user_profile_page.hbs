@@ -1,0 +1,19 @@
+<main id="main-content" class="content">
+  <div class="wrap"><section class="panel">
+    <h1 class="page-title">{{user.name}}</h1>
+    {{#if visible}}
+      {{#if description}}<p>{{description}}</p>{{/if}}
+      <h2>Recent activity</h2>
+      <ul class="list">
+        {{#each activities}}
+          <li><p>{{label}}</p><a href="{{contribution.url}}">{{contribution.title}}</a></li>
+        {{else}}
+          <li>No recent activity to display.</li>
+        {{/each}}
+      </ul>
+      {{pagination}}
+    {{else}}
+      <p>This profile is private.</p>
+    {{/if}}
+  </section></div>
+</main>

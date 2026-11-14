@@ -90,8 +90,20 @@ The old `GOOGLE_CALENDAR_BOOKING_URL` iframe setting is no longer used.
   not checked. Adjust the approved event's duration for the actual job.
 - Calendar checks and writes are not a cross-event transaction. Have one dispatcher
   review at a time and recheck Calendar when multiple people edit the schedule.
-- After deciding, call or email the customer yourself. This version does not send
-  automatic customer confirmations or decline emails.
+- Approval now attempts one confirmation email from `appointments@hvacservicefirst.com`
+  through the existing verified Resend domain, with replies directed to
+  `office@hvacservicefirst.com`. The server-only `RESEND_API_KEY` is restricted
+  to this sending domain and configured only on the booking preview branch.
+- The approval response distinguishes provider acceptance, failure/uncertain outcome,
+  and missing email configuration. Acceptance is not proof of inbox delivery.
+- Resend gets a stable idempotency key for the Calendar event. Reapproving an already
+  reviewed request is rejected by the Calendar state check. No automatic email retry
+  or webhook-based delivery tracking is implemented. If an email fails or approval
+  is interrupted, contact the customer manually; the calendar approval stays saved.
+- After approval, the review page offers **Open Messages** with the customer number
+  and confirmation text. The team reviews and taps Send. Text prefilling varies by
+  device; the message is also displayed for copying. No SMS is sent automatically.
+- Declines do not email the customer; contact them to arrange another time.
 - Manage requests through the review page so the stored approval state stays consistent.
   To arrange a different time, contact the customer, decline the original request,
   and schedule the agreed visit in Calendar.
@@ -134,3 +146,10 @@ Local automated tests mock Google responses; they do not test the live account o
 - https://docs.cloud.google.com/iam/docs/workload-identity-federation
 - https://developers.google.com/workspace/calendar/api/v3/reference/events/insert
 - https://developers.google.com/workspace/calendar/api/v3/reference/events/patch
+
+## Production now published
+
+See [production release results](production-booking-release.md#approved-production-release-result)
+for the approved deployment, active protection, verified public endpoints, and rollback.
+Live booking: https://www.hvacservicefirst.com/contact#schedule
+Team review: https://www.hvacservicefirst.com/admin/appointments

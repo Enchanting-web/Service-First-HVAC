@@ -6,7 +6,7 @@ import { site } from "@/content/site";
 
 /**
  * Homepage hero: copy on a navy field at the left, technician photo bleeding in
- * from the right, with the same-day stats strip sharing the photo backdrop.
+ * from the right, with the seasonal service strip sharing the photo backdrop.
  */
 export function Hero() {
   return (
@@ -47,7 +47,7 @@ export function Hero() {
             </ButtonLink>
             <ButtonLink href="/contact#schedule" variant="outline" size="lg">
               <Icon name="calendar" className="size-[18px]" />
-              Schedule Online
+              Request Service
             </ButtonLink>
           </div>
         </div>

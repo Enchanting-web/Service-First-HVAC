@@ -92,6 +92,7 @@ export async function createServiceRequest(data: ServiceRequest, start: Date) {
   if (response.status === 409) {
     const existing = await eventResult(await calendar(`/${id}`));
     if (existing.extendedProperties?.private?.fingerprint !== fingerprint) throw new BookingError(409, "This request was already submitted with different details. Start a new request.");
+    if (existing.status === "cancelled" || existing.extendedProperties?.private?.state !== "pending") throw new BookingError(409, "This request has already been reviewed. Please contact our team for its current status.");
     return id;
   }
   const saved = await eventResult(response);

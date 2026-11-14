@@ -3,11 +3,11 @@ import { Icon } from "@/components/ui/icon";
 import { emergencyBand } from "@/content/home";
 import { site } from "@/content/site";
 
-/** "Don't Sweat It Out." — the heat-advisory emergency call to action. */
+/** Seasonal heating and emergency service call to action. */
 export function EmergencyBand() {
   return (
     <section className="relative isolate overflow-hidden border-t border-flame-700/60 bg-ink-deep">
-      <SunBurst />
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-r from-flame-700/15 via-transparent to-transparent" />
 
       <div className="container-page relative flex flex-col gap-8 py-12 lg:flex-row lg:items-center lg:justify-between lg:py-14">
         <div className="flex items-center gap-6">
@@ -35,55 +35,6 @@ export function EmergencyBand() {
         </div>
       </div>
     </section>
-  );
-}
-
-/** Ray count and geometry tuned to the burst in the brand mockup. */
-const RAYS = 28;
-
-/**
- * The blazing sun anchored to the band's left edge. Drawn as an SVG so the rays
- * stay crisp; the parent clips whatever hangs off the edge.
- */
-function SunBurst() {
-  return (
-    <svg
-      className="pointer-events-none absolute top-1/2 left-0 h-[17rem] w-[17rem] -translate-x-1/2 -translate-y-1/2"
-      viewBox="-100 -100 200 200"
-      aria-hidden
-    >
-      <defs>
-        <radialGradient id="sun-core">
-          <stop offset="0" stopColor="#fff3d6" />
-          <stop offset="0.35" stopColor="#ffb257" />
-          <stop offset="0.7" stopColor="#e2611d" stopOpacity="0.55" />
-          <stop offset="1" stopColor="#c34800" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="sun-ray" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ffc074" stopOpacity="0.85" />
-          <stop offset="1" stopColor="#e2611d" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-
-      <g>
-        {Array.from({ length: RAYS }, (_, index) => {
-          const angle = (360 / RAYS) * index;
-          // Alternating lengths give the burst its irregular, sun-like edge.
-          const length = index % 2 === 0 ? 96 : 64;
-          return (
-            <path
-              key={angle}
-              d={`M-3 -18 L0 -${length} L3 -18 Z`}
-              fill="url(#sun-ray)"
-              transform={`rotate(${angle})`}
-            />
-          );
-        })}
-      </g>
-
-      <circle r="30" fill="url(#sun-core)" />
-      <circle r="13" fill="#ffe9c2" opacity="0.9" />
-    </svg>
   );
 }
 

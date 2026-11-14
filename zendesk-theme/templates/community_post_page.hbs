@@ -1,0 +1,13 @@
+<main id="main-content" class="content"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb">
+  {{#each path_steps}}
+    {{#if current_page}}
+      <span aria-current="page">{{name}}</span>
+    {{else}}
+      <a href="{{url}}">{{name}}</a><span aria-hidden="true"> / </span>
+    {{/if}}
+  {{/each}}
+</nav><article class="article"><h1>{{post.title}}</h1><div class="article-body">{{post.details}}</div><section aria-label="Discussion comments">
+  {{#each comments}}
+    <div class="list"><strong>{{author.name}}</strong><div>{{body}}</div></div>
+  {{/each}}
+</section></article></div></main>

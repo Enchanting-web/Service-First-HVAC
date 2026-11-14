@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/contact-form";
+import { MessengerContact } from "@/components/contact/messenger-contact";
 import { MapPanel } from "@/components/contact/map-panel";
 import { SmartAssistant } from "@/components/contact/smart-assistant";
 import { ButtonLink } from "@/components/ui/button";
@@ -77,6 +78,7 @@ export default function ContactPage() {
               </ul>
             </div>
 
+            <MessengerContact />
             <SmartAssistant />
           </div>
 
