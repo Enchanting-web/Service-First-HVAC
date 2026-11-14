@@ -1,0 +1,9 @@
+<main id="main-content" class="content"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb">
+  {{#each path_steps}}
+    {{#if current_page}}
+      <span aria-current="page">{{name}}</span>
+    {{else}}
+      <a href="{{url}}">{{name}}</a><span aria-hidden="true"> / </span>
+    {{/if}}
+  {{/each}}
+</nav><h1 class="page-title">My subscriptions</h1><section class="panel">{{#if subscriptions}}<ul class="list">{{#each subscriptions}}<li><a href="{{url}}">{{title}}</a><p>{{following}}</p></li>{{/each}}</ul>{{else}}<p>You are not following any articles or sections yet.</p>{{/if}}</section></div></main>

@@ -7,7 +7,7 @@ export const contactHero = {
   title: "Get In",
   titleAccent: "Touch",
   description:
-    "Ready to schedule service or have a question? Book online below or call us directly.",
+    "Ready to request service or have a question? Send us your preferred time below or call us directly.",
 } as const;
 
 export type ContactMethod = {
@@ -132,7 +132,7 @@ export const serviceAreaSection = {
 } as const;
 
 export const form = {
-  heading: "Book Your Service Visit",
+  heading: "Request Your Service Visit",
   serviceTypes: [
     "AC Repair",
     "Furnace Repair",

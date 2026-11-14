@@ -1,0 +1,13 @@
+.env*
+.git
+.next
+.open-next
+node_modules
+*.tsbuildinfo
+ChatGPT Image*.png
+bun.lock
+assets/screens
+assets/crops
+tests
+docs
+scripts

@@ -1,0 +1,9 @@
+<main id="main-content" class="content"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb">
+  {{#each path_steps}}
+    {{#if current_page}}
+      <span aria-current="page">{{name}}</span>
+    {{else}}
+      <a href="{{url}}">{{name}}</a><span aria-hidden="true"> / </span>
+    {{/if}}
+  {{/each}}
+</nav><h1 class="page-title">{{section.name}}</h1><p class="section-intro">{{section.description}}</p><section class="panel" aria-label="Help articles"><ul class="list">{{#each section.articles}}<li><a href="{{url}}">{{title}}</a><p>{{snippet}}</p></li>{{/each}}</ul>{{pagination}}</section></div></main>

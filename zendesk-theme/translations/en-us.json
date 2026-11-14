@@ -1,0 +1,16 @@
+{
+  "colors_group_label": "Brand colors",
+  "brand_group_label": "Brand images",
+  "brand_color_label": "Service First orange",
+  "brand_color_description": "Primary brand accent used for buttons and highlights.",
+  "brand_blue_label": "Cooling blue",
+  "brand_blue_description": "Accent blue used for cooling and informational details.",
+  "dark_color_label": "Deep navy",
+  "dark_color_description": "Dark brand color used in the hero and footer.",
+  "light_color_label": "Page background",
+  "light_color_description": "Light background color behind help content.",
+  "logo_label": "Horizontal logo",
+  "logo_description": "Transparent Service First horizontal logo used in the header and hero.",
+  "favicon_label": "Favicon",
+  "favicon_description": "Service First fire-and-ice icon used by the browser tab."
+}

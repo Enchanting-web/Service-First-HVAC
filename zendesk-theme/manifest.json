@@ -1,0 +1,59 @@
+{
+  "name": "Service First Heating & Air",
+  "author": "Service First Heating & Air LLC",
+  "version": "1.0.7",
+  "api_version": 4,
+  "default_locale": "en-us",
+  "settings": [
+    {
+      "label": "colors_group_label",
+      "variables": [
+        {
+          "identifier": "brand_color",
+          "type": "color",
+          "label": "brand_color_label",
+          "description": "brand_color_description",
+          "value": "#e2611d"
+        },
+        {
+          "identifier": "brand_blue",
+          "type": "color",
+          "label": "brand_blue_label",
+          "description": "brand_blue_description",
+          "value": "#39a9e8"
+        },
+        {
+          "identifier": "dark_color",
+          "type": "color",
+          "label": "dark_color_label",
+          "description": "dark_color_description",
+          "value": "#071321"
+        },
+        {
+          "identifier": "light_color",
+          "type": "color",
+          "label": "light_color_label",
+          "description": "light_color_description",
+          "value": "#f4f7fa"
+        }
+      ]
+    },
+    {
+      "label": "brand_group_label",
+      "variables": [
+        {
+          "identifier": "logo",
+          "type": "file",
+          "label": "logo_label",
+          "description": "logo_description"
+        },
+        {
+          "identifier": "favicon",
+          "type": "file",
+          "label": "favicon_label",
+          "description": "favicon_description"
+        }
+      ]
+    }
+  ]
+}

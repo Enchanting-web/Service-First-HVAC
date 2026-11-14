@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/contact-form";
+import { MessengerContact } from "@/components/contact/messenger-contact";
 import { MapPanel } from "@/components/contact/map-panel";
 import { SmartAssistant } from "@/components/contact/smart-assistant";
 import { ButtonLink } from "@/components/ui/button";
@@ -7,7 +8,6 @@ import { Icon } from "@/components/ui/icon";
 import { PageHero } from "@/components/ui/page-hero";
 import { contactHero, contactMethods, form, serviceAreaSection } from "@/content/contact";
 import { site } from "@/content/site";
-import { getBookingUrl } from "@/lib/booking";
 
 export const metadata: Metadata = {
   title: "Contact & Schedule Service",
@@ -17,7 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  const bookingUrl = getBookingUrl();
   return (
     <>
       <PageHero
@@ -32,7 +31,7 @@ export default function ContactPage() {
         <div className="flex flex-wrap gap-3">
           <ButtonLink href="#schedule" size="lg">
             <Icon name="calendar" className="size-[18px]" />
-            Schedule Online
+            Request Service
           </ButtonLink>
           <ButtonLink href={site.phone.href} variant="outline" size="lg">
             <Icon name="phone" className="size-[18px] text-flame-500" />
@@ -79,18 +78,17 @@ export default function ContactPage() {
               </ul>
             </div>
 
+            <MessengerContact />
             <SmartAssistant />
           </div>
 
           <div id="schedule" className="scroll-mt-48">
             <h2 className="text-[1.6rem] leading-tight sm:text-[1.85rem]">{form.heading}</h2>
             <p className="mt-3 text-body">
-              {bookingUrl
-                ? "Choose an available time, tell us what you need, and confirm your visit online."
-                : "Online booking is being set up. Call our team to schedule your service visit."}
+              Tell us what you need and request a preferred time. Our team will contact you to confirm your appointment.
             </p>
             <div className="mt-7">
-              <ContactForm bookingUrl={bookingUrl} />
+              <ContactForm />
             </div>
           </div>
         </div>

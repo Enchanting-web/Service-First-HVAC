@@ -2,12 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 /**
- * Legacy contact endpoint. Service appointments are booked through Google's
- * embedded booking page; this endpoint must not acknowledge unrecorded bookings.
- *
- * TODO: send these somewhere. Drop in Resend (or the provider of your choice)
- * where sendNotification is called below and set the API key in the
- * environment; nothing else in the app needs to change.
+ * Legacy contact endpoint. Service requests use /api/appointments.
+ * The newsletter delivery implementation below is separate from booking.
  */
 
 const serviceRequest = z.object({
@@ -58,7 +54,7 @@ export async function POST(request: Request) {
 
   if (parsed.data.intent === "service") {
     return NextResponse.json(
-      { ok: false, error: "Please use the appointment calendar or call us to book service." },
+      { ok: false, error: "Please use the service request form or call our team." },
       { status: 503 },
     );
   }
