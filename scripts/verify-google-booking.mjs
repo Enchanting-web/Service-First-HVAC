@@ -7,8 +7,14 @@ if (!process.argv.includes('--live')) {
   process.exit(1);
 }
 process.loadEnvFile('.env.local');
-const { createServiceRequest, listServiceRequests, reviewServiceRequest, selectedCalendar } = await tsImport('../src/lib/google-booking.ts', import.meta.url);
-const { appointmentStart, localDate } = await tsImport('../src/lib/service-request.ts', import.meta.url);
+// Without "type": "module" in package.json, tsx may load these files as CommonJS
+// and nest every export under `default`; accept either shape.
+async function loadTs(path) {
+  const mod = await tsImport(path, import.meta.url);
+  return mod.default && Object.keys(mod).length === 1 ? mod.default : mod;
+}
+const { createServiceRequest, listServiceRequests, reviewServiceRequest, selectedCalendar } = await loadTs('../src/lib/google-booking.ts');
+const { appointmentStart, localDate } = await loadTs('../src/lib/service-request.ts');
 // Enable only this process, never the public website or the environment file.
 process.env.BOOKING_REQUESTS_ENABLED = 'true';
 const originalFetch = globalThis.fetch;
