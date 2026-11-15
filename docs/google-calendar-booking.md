@@ -20,9 +20,14 @@ It trusts only Vercel project `prj_TVem1MCPcnSqOFrS6UICaeWBQ7R9` in the `tradebu
 team (issuer `https://oidc.vercel.com/tradebuilds`, audience
 `https://vercel.com/tradebuilds`), for development, preview and production.
 
-If the Vercel project moves to another team, the provider's issuer and audience must be
-updated to the new team slug, or every Calendar call fails ("Could not load calendar
-requests"). The project was moved from `enchanting-webs-projects` to `tradebuilds`, and
+If the Vercel project moves to another team, update both of these to the new team slug,
+or every Calendar call fails ("Could not load calendar requests"):
+
+- the provider's issuer (`https://oidc.vercel.com/<team>`) and audience
+  (`https://vercel.com/<team>`);
+- the `team` argument to `getVercelOidcToken` in `src/lib/google-booking.ts`, which
+  local development uses to refresh its token.
+ The project was moved from `enchanting-webs-projects` to `tradebuilds`, and
 the provider was updated on November 15, 2026.
 The service account has no project-wide Editor/Owner roles or domain-wide delegation.
 
@@ -30,8 +35,9 @@ Live verification after calendar sharing was updated passed: pending/private/non
 save, retry deduplication, protected review data, approval to confirmed/busy status,
 stale-approval rejection, busy-time conflict rejection, and decline. Temporary test
 events were removed (Google returned 204/410). No customer invitations or messages
-were sent. Local requests are now enabled; production remains excluded from the
-identity trust policy and has not been deployed.
+were sent. At the time of that check, production was still excluded from the trust
+policy. It was added for the November 6, 2026 production release (see
+`docs/production-booking-release.md`).
 
 ## Finish the connection
 
@@ -65,8 +71,8 @@ identity trust policy and has not been deployed.
    Never use a `NEXT_PUBLIC_` prefix. Vercel supplies the short-lived identity to
    deployed request handlers; do not copy a local development token into hosting.
    Do not download the whole project environment for a token-only check.
-6. Production requires separate deployment authorization and an explicit update to
-   the provider's environment restriction. It is not enabled by this implementation.
+6. Production is enabled: the provider's environment restriction includes `production`
+   (added for the November 6, 2026 release in `docs/production-booking-release.md`).
 
 The old `GOOGLE_CALENDAR_BOOKING_URL` iframe setting is no longer used.
 
