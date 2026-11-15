@@ -1,6 +1,7 @@
 # Service First booking release — published
 
-Target: Vercel `enchanting-webs-projects/service-first-hvac`, project
+Target: Vercel `tradebuilds/service-first-hvac` (originally released under
+`enchanting-webs-projects`; the project has since moved teams), project
 `prj_TVem1MCPcnSqOFrS6UICaeWBQ7R9`, public domain `https://hvacservicefirst.com`.
 
 ## Prepared and verified
@@ -40,7 +41,7 @@ Target: Vercel `enchanting-webs-projects/service-first-hvac`, project
 3. Publish only the reviewed firewall draft. The CLI requires the effects digest:
 
    ```sh
-   vercel firewall publish --project service-first-hvac --scope enchanting-webs-projects --non-interactive --confirm-name service-first-hvac --effects-digest 18b2860629d3a47d
+   vercel firewall publish --project service-first-hvac --scope tradebuilds --non-interactive --confirm-name service-first-hvac --effects-digest 18b2860629d3a47d
    ```
 
    If the digest changed, inspect and approve the new effects rather than bypassing
