@@ -16,8 +16,14 @@ Downloadable service account keys are prohibited by organization policy. That po
 was retained; no private key was created. The app instead uses Vercel OIDC and Google
 Workload Identity Federation. The pool/provider is
 `projects/584092058008/locations/global/workloadIdentityPools/vercel-booking/providers/vercel`.
-It trusts only Vercel project `prj_TVem1MCPcnSqOFrS6UICaeWBQ7R9` in
-`enchanting-webs-projects`, for **development and preview**. Production is excluded.
+It trusts only Vercel project `prj_TVem1MCPcnSqOFrS6UICaeWBQ7R9` in the `tradebuilds`
+team (issuer `https://oidc.vercel.com/tradebuilds`, audience
+`https://vercel.com/tradebuilds`), for development, preview and production.
+
+If the Vercel project moves to another team, the provider's issuer and audience must be
+updated to the new team slug, or every Calendar call fails ("Could not load calendar
+requests"). The project was moved from `enchanting-webs-projects` to `tradebuilds`, and
+the provider was updated on November 15, 2026.
 The service account has no project-wide Editor/Owner roles or domain-wide delegation.
 
 Live verification after calendar sharing was updated passed: pending/private/non-blocking

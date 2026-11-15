@@ -34,7 +34,7 @@ async function accessToken() {
   if (!calendarConfigured()) throw new BookingError(503, "Online requests are not connected yet. Please call our team.");
   const { getVercelOidcToken } = await import("@vercel/oidc");
   const oidcToken = await getVercelOidcToken({
-    project: "prj_TVem1MCPcnSqOFrS6UICaeWBQ7R9", team: "enchanting-webs-projects",
+    project: "prj_TVem1MCPcnSqOFrS6UICaeWBQ7R9", team: "tradebuilds",
   });
   const exchange = await fetch("https://sts.googleapis.com/v1/token", {
     method: "POST", headers: { "Content-Type": "application/json" },
